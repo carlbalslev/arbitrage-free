@@ -1,9 +1,12 @@
 function result = black_scholes(s0, dt, r, sigma, dW)
-#  
-# take one step. The random step is predefined.
+# 
+# Take a step with OU model.
+# The random step dW is normalised, i.e. it has distrib N(0,1)
 #
- 
-st1 = s0 * exp(r*dt + 0.5*sqrt(dt)*sigma*dW);
-result = st1;
-return
 
+  coeff = sigma*dW*sqrt(dt) + (r - 0.5*sigma*sigma)*dt;
+  st = s0 * exp(coeff);
+  result = st;
+
+return
+  
