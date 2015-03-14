@@ -6,10 +6,11 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Some common data structures:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 model:
 *name = string % example: "ou", "hw", "sabr", "hw2f" (a variant would be nice)
-*pars = float list % model parameters, example: r, sigma for scalar OU. 
-*numerical = float list % list of parameters relevant for numerical solution. First is dt.
+*pars = struct % model parameters, example: r, sigma for scalar OU. 
+*numerical = struct % parameters relevant for numerical solution. Format is *dt, *npaths
 
 state:
 *t = float list % asset price(s) at t
@@ -19,10 +20,14 @@ interval:
 *tstart = float % period start 
 *tend = float % period end
 
+contract:
+*cname = string : name of payout, for example "vanilla call"
+*characteristics = struct: name dependent struct. For example for call it contains strike, fix date, pay date 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Main functions:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 val propagate_model : interval * state * model -> state
 % propagate asset(s) on an interval, i.e. from t0 to t1, with defined model.  
 
-
+val dates_from_contract: contract -> (fix dates, pay dates)
