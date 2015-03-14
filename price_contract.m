@@ -11,14 +11,15 @@ function [price, stats] = price_contract(s0, t0, model, contract)
   npaths = model.numerical.npaths; 
   
 		 # this is for the vanilla option with a single fixing
-  period.tstart = t0;
-  period.tend = contract.characteristics.fix_date;
+  t1 = contract.characteristics.fix_date;
+  t_list = [t0, t1];
 
   k = contract.characteristics.strike;
   mat = contract.characteristics.pay_date;
   r = model.pars.r;
   
-  fix = propagate_model(s0,period,model);
+  fix_list = propagate_model(s0,t_list,model);
+  fix = fix_list(:,2);
   fv = max (fix - k, 0);    
   disc = exp(-r * mat);
   pv = mean(fv) * disc;
