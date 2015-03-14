@@ -7,7 +7,7 @@ function [res_fix, res_t] = propagate_model(s0, period, model)
 				#
   
 				# a hardcoded tlist ...
-  nmax = 101;
+  nmax = 3;
   clear('res_list');
   t0=period.tstart;
   t_end=period.tend;
@@ -23,10 +23,10 @@ function [res_fix, res_t] = propagate_model(s0, period, model)
       r = pars.r;
       sigma = pars.sigma;
     case "sabr"
-      alpha = pars(1);
-      beta = pars(2);
-      rho = pars(3);
-      nu = pars(4);
+      alpha = pars.alpha;
+      beta = pars.beta;
+      rho = pars.rho;
+      nu = pars.nu;
     otherwise
       error ( "model not recognised");
   endswitch
