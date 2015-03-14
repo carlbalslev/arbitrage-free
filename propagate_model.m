@@ -5,16 +5,9 @@ function [res_fix, res_t] = propagate_model(s0, period, model)
 				# input: s0, period, model
 				# output: s1, t1
 				#
+				# s1 is vector
   
 				# a hardcoded tlist ...
-  nmax = 3;
-  clear('res_list');
-  t0=period.tstart;
-  t_end=period.tend;
-  
-  dt = (t_end - t0) / (nmax-1);
-  tlist = t0:dt:t_end;
-
   
 				# extract model parameters
   pars = model.pars;
@@ -32,27 +25,23 @@ function [res_fix, res_t] = propagate_model(s0, period, model)
   endswitch
   
 				# extract numnerical parameters
-				# never mind
-  
-  
+  npaths = model.numerical.npaths;
+  dt = model.numerical.max_dt; % ignored
+
+  nmax = 2; % single step only
+  t0=period.tstart;
+  t_end=period.tend;  
+  dt = (t_end - t0) / (nmax-1);
 				# generate pseudorandom numbers  
-  dw_list = normrnd(0,1,[1,nmax]);
+  dw = normrnd(0,1,[npaths,1]);
 				# init
   sn = s0;
-  tn = tlist(1);
-  slist(1)=sn;
-  
-  for n=2:nmax
-     tn1 = tlist(n);
-     dt = tn1 - tn;
-     tn = tn1;
-     dw = dw_list(n);
-     sn1 = black_scholes(sn, dt, r, sigma, dw);
-     slist(n) = sn1;
-     sn = sn1;
-  endfor
-  res_fix = sn;
-  res_t = tn;
+  tn = t0;
+
+  % large-step propagation
+  sn1 = black_scholes(sn, dt, r, sigma, dw);  
+  res_fix = sn1;
+  res_t = t_end;
   
   return
   

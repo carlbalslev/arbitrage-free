@@ -18,14 +18,13 @@ function [price, stats] = price_contract(s0, t0, model, contract)
   mat = contract.characteristics.pay_date;
   r = model.pars.r;
   
-  for n=1:npaths
-    fix = propagate_model(s0,period,model);
-    fv(n) = max (fix - k, 0);    
-  endfor
+  fix = propagate_model(s0,period,model);
+  fv = max (fix - k, 0);    
   disc = exp(-r * mat);
   pv = mean(fv) * disc;
   my_std = std(fv) * disc;
   v95 = 1.96 * my_std / sqrt(npaths);
+  stats.npaths = npaths;
   stats.std = my_std;
   stats.min95 = pv - v95;
   stats.max95 = pv + v95;
