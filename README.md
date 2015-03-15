@@ -1,11 +1,11 @@
- arbitrage-free
+# arbitrage-free
 
- Collection of octave functions for simple monte carlo simulation of arbitrage free models
- 
+# Collection of functions for simple monte carlo simulation of arbitrage free models
 
+# Octave
+# JavaScript
 
-Some common data structures:
-
+Some common data structures for Octave:
 
 model:
 *mname = string % example: "ou", "hw", "sabr", "hw2f" (a variant would be nice)
