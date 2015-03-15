@@ -5,14 +5,21 @@ function [price, stats] = price_contract(s0, t0, model, contract)
 				# input: s0, t0, model, contract
 				# output: price, statistics
 				#
-  
-				# a hardcoded tlist ...
-  
+ 
   npaths = model.numerical.npaths; 
   
-		 # this is for the vanilla option with a single fixing
-  t1 = contract.characteristics.fix_date;
-  t_list = [t0, t1];
+				# create fix list
+				#
+
+  switch (contract.cname)
+	 case {"vanilla call", "vanilla put"} 
+	   t1 = contract.characteristics.fix_date;
+	   t_list = [t0, t1];
+	 otherwise
+	   error ("unknown contract")
+  endswitch
+	   
+				# price contract on each path (vectorised on MC paths)
 
   k = contract.characteristics.strike;
   mat = contract.characteristics.pay_date;
