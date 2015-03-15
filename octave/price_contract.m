@@ -8,7 +8,7 @@ function [price, stats] = price_contract(s0, t0, model, contract)
  
   npaths = model.numerical.npaths; 
   
-				# create fix list
+				# create fix list times
 				#
 
   switch (contract.cname)
@@ -16,29 +16,47 @@ function [price, stats] = price_contract(s0, t0, model, contract)
 	   t1 = contract.characteristics.fix_date;
 	   t_list = [t0, t1];
 	 otherwise
-	   error ("unknown contract")
+	   error (["ERROR ==> ", contract.cname, " is an unsupported contract"])
   endswitch
-	   
-				# price contract on each path (vectorised on MC paths)
 
+				# set contract parameters
   k = contract.characteristics.strike;
   mat = contract.characteristics.pay_date;
+
+				# extra model parameters
   r = model.pars.r;
-  
+
+				# find fix values (MC vector) 
   fix_list = propagate_model(s0,t_list,model);
-  fix = fix_list(:,2);
-  fv = max (fix - k, 0);    
-  disc = exp(-r * mat);
-  pv = mean(fv) * disc;
-  my_std = std(fv) * disc;
+
+				# price contract on each path
+				#(MC vector)
+
+  switch (contract.cname)
+    case  "vanilla call"
+      fix = fix_list(:,2);
+      fv = max (fix - k, 0);    
+      disc = exp(-r * mat);
+      pv_dist = disc * fv;
+      pv = mean(pv_dist);     
+    case "vanilla put" 
+      fix = fix_list(:,2);
+      fv = max (k - fix, 0);    
+      disc = exp(-r * mat);
+      pv_dist = disc * fv;
+      pv = mean(pv_dist);
+    otherwise
+      error ([contract.cname, " is not supported."])
+  endswitch
+  
+  my_std = std(pv_dist);
   v95 = 1.96 * my_std / sqrt(npaths);
   stats.npaths = npaths;
   stats.std = my_std;
   stats.min95 = pv - v95;
   stats.max95 = pv + v95;
-
+  
   price = pv;
-  stats = stats;
   return
   
   
