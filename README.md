@@ -1,14 +1,14 @@
-# arbitrage-free
-#
-# Collection of octave functions for simple monte carlo simulation of arbitrage free models
-# 
+ arbitrage-free
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ Collection of octave functions for simple monte carlo simulation of arbitrage free models
+ 
+
+
 Some common data structures:
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
 model:
-*name = string % example: "ou", "hw", "sabr", "hw2f" (a variant would be nice)
+*mname = string % example: "ou", "hw", "sabr", "hw2f" (a variant would be nice)
 *pars = struct % model parameters, example: r, sigma for scalar OU. 
 *numerical = struct % parameters relevant for numerical solution. Format is *dt, *npaths
 
