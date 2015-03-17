@@ -21,6 +21,8 @@ function contract = set_callput(t_fix, t_pay, underlying, strike, callput)
     error ("set_callput: payment date cannot be before fixing date");
   endif
 
+  asian_times = 0.1:0.1:(t_fix-0.1); % just an example ...
+
   switch(callput)
     case 1
       contract.cname = "vanilla call";
@@ -28,20 +30,28 @@ function contract = set_callput(t_fix, t_pay, underlying, strike, callput)
       contract.cname = "vanilla put";
     case 3
       contract.cname = "asian strike call";
+      characs.asian = asian_times;
     case 4
       contract.cname = "asian strike put";
+      characs.asian = asian_times;
     case 5
       contract.cname = "asian rate call";
+      characs.asian = asian_times;
     case 6
       contract.cname = "asian rate put";
+      characs.asian = asian_times;
     case 7
       contract.cname = "lookback strike call";
+      characs.asian = asian_times;
     case 8
       contract.cname = "lookback strike put";
+      characs.asian = asian_times;
     case 9
       contract.cname = "lookback rate call";
+      characs.asian = asian_times;
     case 10
       contract.cname = "lookback rate put";
+      characs.asian = asian_times;
     otherwise
       error (["callput =", mat2str(callput), " is out of bounds as contract type"])  
   endswitch
