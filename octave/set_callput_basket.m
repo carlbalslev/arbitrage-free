@@ -1,10 +1,10 @@
-function contract = set_callput(t_fix, t_pay, underlying, strike, callput)
+function contract = set_callput_basket(t_fix, t_pay, underlyings, strike, callput)
 				#
-				# create vanilla call contract
+				# create basket contract
 				# input: t_fix, t_pay, underlying, strike, callput
 				# output: contract
 				#
-				# callput enumeration:
+				# basket enumeration:
 				# 1: vanilla call
 				# 2: vanilla put
 				# 3: asian strike call
@@ -17,16 +17,13 @@ function contract = set_callput(t_fix, t_pay, underlying, strike, callput)
 				# 10: lookback rate put
 				# 11: american call
 				# 12: american put
-				# 13: vanilla chooser
-
-
+ 
+  
   if (t_fix>t_pay)
     error ("set_callput: payment date cannot be before fixing date");
   endif
 
-				     # make these input parameters
-  asian_times = 0.1:0.1:(t_fix-0.1);
-  choose_time = 0.5;
+  asian_times = 0.1:0.1:(t_fix-0.1); % just an example ...
 
   switch(callput)
     case 1
@@ -61,18 +58,17 @@ function contract = set_callput(t_fix, t_pay, underlying, strike, callput)
       contract.cname = "american call";
     case 12
       contract.cname = "american put";
-    case 13
-      contract.cname = "vanilla chooser";
-      characs.fix_choose = choose_time;
     otherwise
-      error (["callput =", mat2str(callput), " is out of bounds as contract type"])
+      error (["callput =", mat2str(callput), " is out of bounds as contract type"])  
   endswitch
-
+  
   characs.fix_date = t_fix;
   characs.pay_date = t_pay;
   characs.underlying = underlying;
   characs.strike = strike;
-
+  
   contract.characteristics = characs;
-
+  
   return
+  
+  
