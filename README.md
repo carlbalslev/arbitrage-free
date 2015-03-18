@@ -4,6 +4,6 @@ Collection of functions for simple monte carlo simulation of arbitrage free mode
 
 ### General comments ...
 
-Available in Octave and JavaScript
+Available in Octave and F# (also compiled to javascript)
 
 

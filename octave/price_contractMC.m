@@ -132,10 +132,13 @@ function [price, stats] = price_contractMC(s0, t0, model, contract)
 				# common calcs
   my_std = std(pv_dist);
   v95 = 1.96 * my_std / sqrt(npaths);
+  v99 = 2.576 * my_std / sqrt(npaths);
   stats.npaths = npaths;
   stats.std = my_std;
   stats.min95 = pv - v95;
   stats.max95 = pv + v95;
+  stats.min99 = pv - v99;
+  stats.max99 = pv + v99;
   stats.p_dist = pv_dist;
   
   price = pv;
