@@ -1,6 +1,6 @@
-function [model, period] = set_bs_model(mtype, s0, t0,t1,r,sigma,n_mc)
+function [model, period] = set_bs_model(mtype, t0,t1,r,sigma,n_mc)
 				#
-				# input: mtype, s0, t0,t1,r,sigma,n_mc
+				# input: mtype, t0,t1,r,sigma,n_mc
 				# output: model, period
 				#
 				# where mtype is in {mc, mc-lsm, pde}

@@ -8,5 +8,4 @@ function result = hull_white(r0, alpha, sigma, dW)
   st = s0 .* exp(coeff);
   result = st;
 
-return
-  
+endfunction
